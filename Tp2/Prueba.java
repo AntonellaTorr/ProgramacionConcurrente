@@ -5,7 +5,13 @@ public class Prueba {
         PracticaThreads hilo1= new PracticaThreads("PEPE");
         PracticaThreads hilo2= new PracticaThreads("JUAN");
         
-        hilo1.start();
-        hilo2.start();
+        try {
+            hilo1.join();
+        } catch (InterruptedException e) {
+            System.out.println ("En el join");
+            e.printStackTrace();
+        }
+        System.out.println ("Main");
+
     }
 }

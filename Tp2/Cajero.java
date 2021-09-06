@@ -3,9 +3,9 @@ package Tp2;
 public class Cajero implements Runnable {
     private String nombre;
     private Cliente cliente;
-    private long initialTime;
+   private long initialTime;
 
-    public Cajero (String nombre,Cliente cliente, long time){
+    public Cajero (String nombre, Cliente cliente, long time){
         this.nombre=nombre;
         this.cliente=cliente;
         this.initialTime=time;

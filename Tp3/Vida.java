@@ -1,23 +1,21 @@
 package Tp3;
 
 public class Vida  {
-    private int puntos= 10;
+    private int puntos= 100;
 
     public Vida (){}
     
-    public int getPuntos(){
+    public synchronized int getPuntos(){
         return puntos;
      }
-    public void añadirVida(int cantPuntos){
+    public synchronized void añadirVida(int cantPuntos){
         puntos= puntos+cantPuntos;
     }
     
-    public void quitarVida(int cantPuntos){
-        try{
-            Thread.sleep(10000);
-        }catch (InterruptedException e){
+    public synchronized void quitarVida(int cantPuntos){
+            puntos= puntos-cantPuntos;
 
-        }
-        puntos= puntos-cantPuntos;
     }
+        
+    
 }

@@ -2,17 +2,54 @@ package Tp3;
 
 public class Main {
     public static void main(String[] args) {
-        int arr[]={1,0,0,1,0};// puede utilizar distintos valores para ver los cambios con otros valores.
-        MiHilo mh1 = MiHilo.creaEInicia("#1",arr);
-        MiHilo mh2 = MiHilo.creaEInicia("#2",arr);
-        /* try {
-            mh1.hilo.join();
-            mh2.hilo.join();
-        }catch (InterruptedException exc){}*/
-        
+        Object varC=new Object();
+        HiloLetra a= new HiloLetra(1,varC, 'A');
+        HiloLetra b= new HiloLetra(2,varC,'B');
+        HiloLetra c= new HiloLetra(3,varC,'C');
+
+        Thread hiloA= new Thread (a, "HiloA");
+        Thread hiloB= new Thread (b, "HiloB");
+        Thread hiloC= new Thread (c, "HiloC");
+
+        hiloA.start();
+        try{
+            hiloA.join();
+        }catch(InterruptedException e){}
+        hiloB.start();
+        try{
+            hiloB.join();
+        }catch(InterruptedException e){}
+        hiloC.start();
+
+
+
+
+
+
+
+
+
+
+
 
 
         /*
+        int arr[]={1,0,0,1,0};// puede utilizar distintos valores para ver los cambios con otros valores.
+        
+        MiHilo mh1 = MiHilo.creaEInicia("#1",arr);
+        MiHilo mh2 = MiHilo.creaEInicia("#2",arr);
+
+        
+        try {
+            mh1.hilo.join();
+            mh2.hilo.join();
+        }catch (InterruptedException exc){
+        System.out.println("Hilo principal interrumpido.");
+        }
+       
+
+
+        
         Comida comida= new Comida ();
         Rueda rueda= new Rueda ();
         Hamaca hamaca= new Hamaca();

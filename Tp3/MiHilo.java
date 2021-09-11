@@ -19,8 +19,12 @@ package Tp3;
         public void run(){
             int sum;
             System.out.println(hilo.getName()+ " iniciando.");
-            resp=sumaM.sumMatriz(arr);
-            System.out.println("Suma para "+hilo.getName()+ " es "+resp);
-            System.out.println(hilo.getName()+ " terminado.");
+            synchronized (sumaM){
+                resp=sumaM.sumMatriz(arr);
+                System.out.println("Sali del metodo run");
+                System.out.println("Suma para "+hilo.getName()+ " es "+resp);
+                System.out.println(hilo.getName()+ " terminado.");
+            }
+            
         }
     }

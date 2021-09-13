@@ -5,15 +5,23 @@ public class Vida  {
 
     public Vida (){}
     
-    public synchronized int getPuntos(){
+    public int getPuntos(){
         return puntos;
      }
-    public synchronized void añadirVida(int cantPuntos){
+    public void añadirVida(int cantPuntos){
+        try{
+            Thread.sleep(100);
+        }catch(InterruptedException e){};
         puntos= puntos+cantPuntos;
+       
     }
     
-    public synchronized void quitarVida(int cantPuntos){
-            puntos= puntos-cantPuntos;
+    public  void quitarVida(int cantPuntos){
+        try{
+            Thread.sleep(100);
+        }catch(InterruptedException e){};
+        puntos= puntos-cantPuntos;
+
 
     }
         

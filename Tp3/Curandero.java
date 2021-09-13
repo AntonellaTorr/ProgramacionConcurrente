@@ -9,9 +9,9 @@ public class Curandero implements Runnable {
     public void run (){
         int i=0;
         while (i<5){
-            //System.out.println ("Vida antes de curar "+vidaAtacar.getPuntos());
+            System.out.println ("Vida antes de curar "+vidaAtacar.getPuntos());
             vidaAtacar.añadirVida(3);
-            //System.out.println ("Vida despues de curar "+vidaAtacar.getPuntos());
+            System.out.println ("Vida despues de curar "+vidaAtacar.getPuntos());
             i++;
         }
     }

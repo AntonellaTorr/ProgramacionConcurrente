@@ -9,6 +9,7 @@ public class Auto extends Vehiculo implements Runnable {
     private int kmService;
     private int kmActual;
     private double litrosNafta;
+    private double distanciaARecorrer;
     private SurtidorCombustible s;
 
     public Auto (String patente, String modelo, String marca, int kmService, int kmActual, double litrosNafta ,SurtidorCombustible s){
@@ -27,7 +28,6 @@ public class Auto extends Vehiculo implements Runnable {
     }
     public void andar(int cantKm){
         System.out.println ("En el metodo andar de "+Thread.currentThread().getName()+ "/ kmActual antes de andar " +kmActual);
-    
         this.kmActual=kmActual+cantKm;
         System.out.println (Thread.currentThread().getName()+ "/ kmActual despues de andar " +kmActual);
         actualizarKmFaltantes(cantKm);

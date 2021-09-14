@@ -1,7 +1,65 @@
 package Tp3;
 
+
+
 public class Main {
     public static void main(String[] args) {
+
+        int [] arr=new int[50000];
+        int i=0;
+        while (i<50000){
+            arr[i]=1;
+            i++;
+           
+
+        }
+        //int arr[]={1,2,3,4,5,6,7,8,9,10};
+        
+        HiloSumador a= new HiloSumador(arr,0,9999);
+        HiloSumador b= new HiloSumador(arr,10000,19999);
+        HiloSumador c= new HiloSumador(arr,20000,29999);
+        HiloSumador d= new HiloSumador(arr,30000,39999);
+        HiloSumador e= new HiloSumador(arr,40000,49999);
+        /*
+        HiloSumador a= new HiloSumador(arr,0,1);
+        HiloSumador b= new HiloSumador(arr,2,3);
+        HiloSumador c= new HiloSumador(arr,4,5);
+        HiloSumador d= new HiloSumador(arr,6,7);
+        HiloSumador e= new HiloSumador(arr,8,9);
+        */
+
+        Thread hiloA= new Thread (a,"A");
+        Thread hiloB= new Thread (b,"B");
+        Thread hiloC= new Thread (c,"C");
+        Thread hiloD= new Thread (d,"D");
+        Thread hiloE= new Thread (e,"E");
+        
+        hiloA.start();
+        hiloB.start();
+        hiloC.start();
+        hiloD.start();
+        hiloE.start();
+
+        try {
+            hiloA.join();
+            hiloB.join();
+            hiloC.join();
+            hiloD.join();
+            hiloE.join();
+        }catch(InterruptedException m){
+             m.printStackTrace();
+        }
+        int sumaFinal= a.getSumaParcial()+b.getSumaParcial()+c.getSumaParcial()+d.getSumaParcial()+e.getSumaParcial();
+        System.out.println ("Suma final segun los hilos "+sumaFinal);
+        System.out.println ("Suma final correcta 50.000");
+
+
+
+
+
+
+
+        /*
         SurtidorCombustible a= new SurtidorCombustible ();
         Auto a1= new Auto("000 ADC", "RMP", "Ford ", 3000,0,1000,a);
         Auto a2= new Auto("000 RRR", "UNIC", "Chevrolet ", 3000,0,1000,a);
@@ -28,7 +86,7 @@ public class Main {
             auto5.join();
         }catch(InterruptedException e){}
            System.out.println ("Cant Litros en la estacion "+ a.getCantLitros());
-        /*
+        
         Object varC=new Object();
         HiloLetra a= new HiloLetra(1,varC, 'A');
         HiloLetra b= new HiloLetra(2,varC,'B');

@@ -3,32 +3,39 @@ package Tp3;
 public class HiloLetra implements Runnable {
     private char letra;
     private int cantImpresiones;
-    private Object varCompartida;
+    private int turno;
+    private GestorTurno gestor;
+
     
-    public HiloLetra (int cant, Object varC, char letra,boolean miTurno){
+    public HiloLetra (int cant,GestorTurno gestor, char letra,int turno){
         this.cantImpresiones=cant;
-        this.varCompartida=varC;
+        this.gestor=gestor;
         this.letra=letra;
-        //this.esMiTurno=miTurno;
+        this.turno=turno;
     }
     public void run (){
-        /*while (esMiTurno){        
-            imprimir(varCompartida);
-        }*/
-        
-    }
-    public void imprimir(Object varC){
-        synchronized (varCompartida){
-            for (int i=0;i<cantImpresiones;i++){
-                System.out.print(letra);
-                if (i==cantImpresiones-1){
-                   //esMiTurno=false;
-                }
+        int i=0,cantExito=0;
+        while (cantExito<3){
+            if (this.gestor.getTurno()==turno){
+                imprimir();
+                cantExito++;
+                this.gestor.siguienteTurno();
+            }
+            else{ 
+                try{Thread.sleep(10);}catch(InterruptedException e){}
             }
         }
-            
-        
+    
     }
+    
+        
+    
+    public void imprimir(){
+            for (int i=0;i<cantImpresiones;i++){
+                System.out.print(letra);
+                
+            }
+   } 
 
     
 }

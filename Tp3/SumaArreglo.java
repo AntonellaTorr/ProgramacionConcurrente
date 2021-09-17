@@ -7,7 +7,7 @@ public class SumaArreglo {
     }
     int sumArreglo(int nums[],int inicio,int fin){
         sum=0;
-        for (int i=inicio; i<=fin;i++){
+        for (int i=inicio; i<fin;i++){
             sum=sum+nums[i];
             /*try {
                 Thread.sleep(10);//permitir el cambio de tarea

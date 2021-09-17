@@ -1,57 +1,27 @@
 package Tp3;
 
-
+import java.util.Scanner;
 
 public class Main {
+ 
     public static void main(String[] args) {
 
-        int [] arr=new int[50000];
-        int i=0;
-        while (i<50000){
-            arr[i]=1;
-            i++;
-           
+        GestorTurno a= new GestorTurno(4);
 
-        }
-        //int arr[]={1,2,3,4,5,6,7,8,9,10};
-        
-        HiloSumador a= new HiloSumador(arr,0,9999);
-        HiloSumador b= new HiloSumador(arr,10000,19999);
-        HiloSumador c= new HiloSumador(arr,20000,29999);
-        HiloSumador d= new HiloSumador(arr,30000,39999);
-        HiloSumador e= new HiloSumador(arr,40000,49999);
-        /*
-        HiloSumador a= new HiloSumador(arr,0,1);
-        HiloSumador b= new HiloSumador(arr,2,3);
-        HiloSumador c= new HiloSumador(arr,4,5);
-        HiloSumador d= new HiloSumador(arr,6,7);
-        HiloSumador e= new HiloSumador(arr,8,9);
-        */
+        HiloLetra m= new HiloLetra(1,a,'A',1);
+        HiloLetra b= new HiloLetra(1,a,'B',3);
+        HiloLetra c= new HiloLetra(1,a,'C',2);
+        HiloLetra d= new HiloLetra(1,a,'D',4);
 
-        Thread hiloA= new Thread (a,"A");
-        Thread hiloB= new Thread (b,"B");
-        Thread hiloC= new Thread (c,"C");
-        Thread hiloD= new Thread (d,"D");
-        Thread hiloE= new Thread (e,"E");
-        
+        Thread hiloA= new Thread (m, "HiloA");
+        Thread hiloB= new Thread (b, "HiloB");
+        Thread hiloC= new Thread (c, "HiloC");
+        Thread hiloD= new Thread (d, "HiloD");
+
         hiloA.start();
         hiloB.start();
         hiloC.start();
         hiloD.start();
-        hiloE.start();
-
-        try {
-            hiloA.join();
-            hiloB.join();
-            hiloC.join();
-            hiloD.join();
-            hiloE.join();
-        }catch(InterruptedException m){
-             m.printStackTrace();
-        }
-        int sumaFinal= a.getSumaParcial()+b.getSumaParcial()+c.getSumaParcial()+d.getSumaParcial()+e.getSumaParcial();
-        System.out.println ("Suma final segun los hilos "+sumaFinal);
-        System.out.println ("Suma final correcta 50.000");
 
 
 
@@ -60,6 +30,40 @@ public class Main {
 
 
         /*
+        int [] arr=new int[50000];
+        int i=0;
+        while (i<50000){
+            arr[i]=(int)Math.floor(Math.random() * 11);
+            i++;         
+
+        }
+        System.out.println ("Ingrese la cantidad de hilos que desea crear");
+        Scanner n= new Scanner(System.in);
+        int cant= n.nextInt();
+        HiloSumador [] arrRunnable= new HiloSumador [cant];
+        int intervalo= 50000/cant;
+       
+        Thread [] arrHilos = new Thread [cant];
+
+        crearRunnable(arr,arrRunnable, intervalo);
+        crearEIniciarHilos(arrHilos, arrRunnable);
+
+                
+        for (int j=0;j<arrHilos.length;j++){
+            try{
+            arrHilos[j].join();
+            }catch(InterruptedException e){} 
+        }
+
+        
+        
+        
+        System.out.println ("Suma final segun los hilos "+calculoSumaHilos(arrRunnable));
+        System.out.println ("Suma correcta "+calculoSumaCorrecta(arr));
+       
+
+
+    
         SurtidorCombustible a= new SurtidorCombustible ();
         Auto a1= new Auto("000 ADC", "RMP", "Ford ", 3000,0,1000,a);
         Auto a2= new Auto("000 RRR", "UNIC", "Chevrolet ", 3000,0,1000,a);
@@ -88,13 +92,7 @@ public class Main {
            System.out.println ("Cant Litros en la estacion "+ a.getCantLitros());
         
         Object varC=new Object();
-        HiloLetra a= new HiloLetra(1,varC, 'A');
-        HiloLetra b= new HiloLetra(2,varC,'B');
-        HiloLetra c= new HiloLetra(3,varC,'C');
-
-        Thread hiloA= new Thread (a, "HiloA");
-        Thread hiloB= new Thread (b, "HiloB");
-        Thread hiloC= new Thread (c, "HiloC");
+        
 
         
         PruebaHilosLetra.prueba(hiloA, hiloB, hiloC);
@@ -127,13 +125,12 @@ public class Main {
         J.start();
         P.start();
         M.start();
- 
 
         VerificarCuenta vc = new VerificarCuenta();
         Thread Luis = new Thread(vc, "Luis");
-        Thread Manuel = new Thread(vc, "Manuel");
+        Thread Man = new Thread(vc, "Manuel");
         Luis.start();
-        Manuel.start();
+        Man.start();
         
         Vida v= new Vida ();
         Orco orco= new Orco(v);
@@ -150,10 +147,50 @@ public class Main {
         }
        
 
-        System.out.println ("Valor final de la vida " +v.getPuntos());
-        */
+        System.out.println ("Valor final de la vida " +v.getPuntos());*/
         
 
 
+        }
+        public static void crearRunnable(int[] arreglo,HiloSumador [] arrRunnable, int intervalo){
+            int l=0;
+            int p=0;
+            while(l<arrRunnable.length){
+                arrRunnable[l]= new HiloSumador (arreglo,p,p+intervalo);
+                l++;
+                p+=intervalo;
+                
+            }
+        }
+    
+        public static void crearEIniciarHilos(Thread []arrHilos, HiloSumador [] arrRunnable){
+            int l=0;
+            int m=0;
+            while(l<arrHilos.length){
+                arrHilos[l]=new Thread(arrRunnable[m]);
+                l++;
+                m++;
+            }
+            for (int j=0;j<arrHilos.length;j++){
+                arrHilos[j].start();
+            }
+        }
+        public static int calculoSumaCorrecta(int [] arr){
+            int i=0;
+            int suma=0;
+            while (i<50000){
+                suma=suma+arr[i];
+                i++;
+            }
+            return suma;
+        }
+        public static int calculoSumaHilos(HiloSumador [] arrRunnable){
+            int sumaFinal=0;
+            int it=0;
+            while (it<arrRunnable.length){
+                sumaFinal+=arrRunnable[it].sumaParcial;
+                it++;
+            }
+            return sumaFinal;
         }
 }

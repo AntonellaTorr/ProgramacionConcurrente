@@ -5,10 +5,8 @@ public class Rueda {
     public Rueda (){
         cantRuedas=4;
     }
-    public static void usarRueda(){
-        try {Thread.sleep(1000);}
-        catch(InterruptedException e){}
-        System.out.println ("Usando la rueda "+ Thread.currentThread().getName());
+    public synchronized static void usarRueda(){
+     System.out.println ("Usando la rueda "+ Thread.currentThread().getName());
         
 
     }

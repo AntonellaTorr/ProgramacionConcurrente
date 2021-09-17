@@ -2,15 +2,22 @@ package Tp3;
 
 public class GestorTurno {
     private int num;
+    private int limite;
 
-    public GestorTurno(){
-       num=0;
+    public GestorTurno(int limite){
+       num=1;
+       this.limite=limite;
     }
-    public int getNum(){
+    public synchronized int getTurno(){
         return this.num;
     }
-    public int siguienteTurno(){
-        num=(num+1)%3;
+    public synchronized int siguienteTurno(){
+        if (num==limite){
+            num=1;
+        }
+        else{
+            num++;
+        }
         return num;
     }
 

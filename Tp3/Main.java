@@ -55,9 +55,6 @@ public class Main {
             }catch(InterruptedException e){} 
         }
 
-        
-        
-        
         System.out.println ("Suma final segun los hilos "+calculoSumaHilos(arrRunnable));
         System.out.println ("Suma correcta "+calculoSumaCorrecta(arr));
        

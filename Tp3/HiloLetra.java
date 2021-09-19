@@ -14,7 +14,7 @@ public class HiloLetra implements Runnable {
         this.turno=turno;
     }
     public void run (){
-        int i=0,cantExito=0;
+        int cantExito=0;
         while (cantExito<3){
             if (this.gestor.getTurno()==turno){
                 imprimir();
@@ -31,10 +31,10 @@ public class HiloLetra implements Runnable {
         
     
     public void imprimir(){
-            for (int i=0;i<cantImpresiones;i++){
-                System.out.print(letra);
-                
-            }
+        for (int i=0;i<cantImpresiones;i++){
+            System.out.print(letra);
+            
+        }
    } 
 
     

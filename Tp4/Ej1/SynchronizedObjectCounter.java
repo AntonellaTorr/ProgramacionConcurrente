@@ -15,6 +15,14 @@ public class SynchronizedObjectCounter {
     public int value() { 
         return c ;
     }
+    /*se estan sincronizando dos variables distintas en este caso por lo tanto no se asegura la consitencia, para lograr esto se podria:
+    1-Sincronizar todos los metodos, increment, decrement y value 
+    2- En todos los metodos castear la variable c a integer y sincronizarla
+
+    1C- Para este caso creo que da lo mismo utilizar el metodo o un bloque sincronizado ya que la seccion critica es todo el metodo
+    no hay partes que no lo sean. Por eso el usar bloques no tendria mucho sentido ya que no hay nada mas que se pueda ejecutar 
+    sin sincronizacion
+    */
     public static void main(String[] args) {
         SynchronizedObjectCounter synCoun= new SynchronizedObjectCounter();
         TestSync hilo1= new TestSync(synCoun,"Hilo1");

@@ -1,41 +1,58 @@
 package Tp4.Ej5;
 
+import java.util.concurrent.Semaphore;
+
 public class CentroImpresion {
     private int numA;
     private int numB;
-    private static Impresora a=new Impresora("A"); ;
-    private static Impresora b=new Impresora("B");;
+    private Impresora [] impresorasA;
+    private Impresora [] impresorasB;
+
 
 
     public CentroImpresion (int numA, int numB){
         this.numA=numA;
         this.numB=numB;
-        int i=0;
-        
+        this.impresorasA= new Impresora[numA];
 
-        /*
-        this.a= new Impresora [numA];
-        this.b= new Impresora [numB];
-        while(i<numA){
-            this.a[i]= new Impresora("A");
-            i++;
+        this.impresorasB= new Impresora[numB];
+        for (int i=0;i<numA;i++){
+            impresorasA[i]= new Impresora("A","Desocupada");
         }
-        i=0;
-        while(i<numB){
-            this.b[i]= new Impresora("B");
-            i++;
-        }
-        */
-        
-        
-     }
-    public static void imprimir (String tipo,String texto){
-        if (tipo.equals("A")){
-            a.imprimir("A");
-        }
-        else{
-            b.imprimir("B");
+        for (int j=0;j<numB;j++){
+            impresorasB[j]= new Impresora("B","Desocupada");
         }
     }
+
+    public Impresora buscarImpresoraLibre(String tipo){
+        Impresora impresoraLibre=null;
+        Impresora [] arrayImp;
+        int i=0;
+        if (tipo.equals("B")){
+            while (impresoraLibre==null&& i<numB){
+                if (impresorasB[i].getEstado().equals("Desocupada")){
+                    impresoraLibre=impresorasB[i];
+                }
+                i++;
+            }
+        }
+        else{
+            
+            arrayImp=impresorasA;
+        }
+       
+        return impresoraLibre;
+    }
+    
+    public synchronized void imprimir (String cadena, String tipoImpresion){
+        Impresora imp=buscarImpresoraLibre(tipoImpresion);
+        if (imp==null){
+            if (tipoImpresion.equals("A")){
+                
+            }
+        }
+        imp.imprimir(cadena);
+    }
+
     
 }

@@ -11,8 +11,7 @@ public class Taxista implements Runnable {
 
     public void run (){
         while (true){
-
-        Taxi.usarTaxi();
+            Taxi.usarTaxi();
         }
 
         

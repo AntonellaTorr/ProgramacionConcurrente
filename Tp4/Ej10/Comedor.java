@@ -29,7 +29,6 @@ public class Comedor {
         System.out.println (Thread.currentThread().getName()+ "  llego al comedor");
         semEmpleado.release();      
         try{
-            
             semMozo.acquire();
             System.out.println (Thread.currentThread().getName()+"  termino de comer");
             

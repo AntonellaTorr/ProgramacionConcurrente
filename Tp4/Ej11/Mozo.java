@@ -1,4 +1,4 @@
-package Tp4.Ej10;
+package Tp4.Ej11;
 
 public class Mozo implements Runnable {
     private Comedor c;
@@ -6,6 +6,6 @@ public class Mozo implements Runnable {
         this.c=c;
     }
     public void run (){
-        c.servirComida();
+        c.servirBebidas();
     }
 }

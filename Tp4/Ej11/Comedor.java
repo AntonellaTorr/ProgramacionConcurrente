@@ -1,4 +1,4 @@
-package Tp4.Ej10;
+package Tp4.Ej11;
 
 import java.util.concurrent.Semaphore;
 
@@ -7,8 +7,9 @@ public class Comedor {
     //semMozo avisara al empleado que su comida esta lista
     private static Semaphore semEmpleado= new Semaphore(0);
     private static Semaphore semMozo= new Semaphore(0);
+    private static Semaphore semCocinero= new Semaphore(0);
 
-    public void servirComida (){
+    public void servirBebidas (){
         while (true){
             try{
                 //solo si el empleado  le aviso que llego (libero el semaforo )va a poder comenzar a preparar la comida

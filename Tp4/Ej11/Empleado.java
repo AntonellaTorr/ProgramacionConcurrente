@@ -1,11 +1,23 @@
-package Tp4.Ej10;
+package Tp4.Ej11;
 
 public class Empleado implements Runnable {
     private Comedor c;
-    public Empleado (Comedor c){
+    private String pedido;
+    public Empleado (Comedor c, String p){
         this.c=c;
+        this.pedido=p;
     }
     public void run (){
-        c.solicitarComida();
+        if (this.pedido.equals("Comer")){
+            c.solicitarComida();
+        }
+        else{
+            if (this.pedido.equals("Tomar")){
+
+            }else{
+                
+            }
+        }
+       
     }
 }

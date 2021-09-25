@@ -7,35 +7,34 @@ public class Taxi {
     //semTaxista para comunicarle al pasajero que llego
     private static Semaphore semPasajero= new Semaphore (0);
     private static Semaphore semTaxista= new Semaphore(0);
+    private static Semaphore mutex=new Semaphore(1);
 
     public Taxi (){
         
 
     }
 
-    public static void usarTaxi(){
-        //el pasajero le avisa al taxista que quiere viajar 
+    public static void iniciarViaje(){
         try{
-            semPasajero.acquire();
-            //simular el viaje
-            System.out.println ("Iniciando el viaje");
-            try{
-                Thread.sleep(100);
-            }catch (InterruptedException e){}
-            System.out.println ("llego a destino");
-            semTaxista.release();
-            
-            
+            semPasajero.acquire();            
         }catch (InterruptedException e){}
     }
-    public synchronized static void solicitarViaje(){
-        semPasajero.release();
-        System.out.println(Thread.currentThread().getName()+" subiendo al taxi");
+    public static void finalizarViaje(){
+        semTaxista.release();
+    }
+
+    public static void solicitarViaje(){
         try{
-            //sirve para que el taxista le avise que llego
+            mutex.acquire();
+            semPasajero.release();
+        }catch(InterruptedException e){}
+    }
+    public static void bajarseDelTaxi(){
+        try{
             semTaxista.acquire();
-            System.out.println (Thread.currentThread().getName()+" bajandose del taxi");
-        } catch (InterruptedException e){};
+            System.out.println (Thread.currentThread().getName() +" se baja del taxi");
+            mutex.release();
+        } catch (InterruptedException e){}
     }
 
 }

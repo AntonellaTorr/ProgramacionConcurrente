@@ -6,6 +6,13 @@ public class Mozo implements Runnable {
         this.c=c;
     }
     public void run (){
-        c.servirBebidas();
+        while (true){
+            c.comenzarAPrepararBebida();
+            System.out.println ("El mozo comienza a preparar la bebida");
+            try {
+                Thread.sleep(10);
+            }catch (InterruptedException e){}
+            c.servirBebida();
+        }
     }
 }

@@ -20,6 +20,7 @@ public class Test {
         for (int j=0;j<cant;j++){
             arregloPasajeros[j]= new Thread(new Pasajero(t),"Pasajero "+j);
         }
+        
         taxista.start();
         for (int i=0;i<cant;i++){
             arregloPasajeros[i].start();

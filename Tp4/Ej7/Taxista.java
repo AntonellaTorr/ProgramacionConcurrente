@@ -11,7 +11,11 @@ public class Taxista implements Runnable {
 
     public void run (){
         while (true){
-            Taxi.usarTaxi();
+            Taxi.iniciarViaje();
+             try{
+                Thread.sleep (10);
+             }catch(InterruptedException e){}
+             Taxi.finalizarViaje();
         }
 
         

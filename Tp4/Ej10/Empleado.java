@@ -6,6 +6,11 @@ public class Empleado implements Runnable {
         this.c=c;
     }
     public void run (){
+        c.ingresarAlComedor();
         c.solicitarComida();
+        c.esperarComida();
+        c.irseDelComedor();
+        //sleep para simular que come
+
     }
 }

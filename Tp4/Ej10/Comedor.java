@@ -23,8 +23,6 @@ public class Comedor {
     }
 
     public void solicitarComida (){
-        //lo hago synchronized x si viene mas de un empleado
-        //el empleado solicita la comida
         System.out.println (Thread.currentThread().getName()+ "  llego al comedor");
         semEmpleado.release();            
 
@@ -36,6 +34,7 @@ public class Comedor {
     }
     public void irseDelComedor (){
         mutex.release();        
+        System.out.println (Thread.currentThread().getName()+ "  se va del  comedor");
     }
     public void esperarComida (){
         try{

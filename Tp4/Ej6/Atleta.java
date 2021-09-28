@@ -13,11 +13,14 @@ public class Atleta implements Runnable {
     }
 
     public void run(){
-        while (!lado.equals(t.getLado())){
-            try{Thread.sleep(10);}catch (InterruptedException e){}
-            //System.out.println ("Lado testigo "+t.getLado()+ "lado del hilo con nombre "+Thread.currentThread().getName()+" "+this.lado); 
+        while (!t.agarrarTestigo(lado, ladoLlegada)){
         }
-        t.correr(ladoLlegada);
+        try{
+           System.out.println ("corriendo");
+            Thread.sleep((int)Math.random()*100);
+        }catch (InterruptedException e){}
+        t.entregarTestigo(lado, ladoLlegada);
+        
         
       
         

@@ -3,35 +3,40 @@ package Tp4.Ej6;
 import java.util.concurrent.Semaphore;
 
 public class Testigo {
-    private String lado;
+    private String ladoActual;
+    private String ladoDestino;
     private static Semaphore semTestigo= new Semaphore(1);
+    private static Semaphore mutex=new Semaphore(1);
     
     public Testigo(){
-        lado="A";
+        ladoActual="A";
+        ladoDestino="B";
+
     }
 
-    public synchronized String getLado(){
-        return lado;
-    }
-    public synchronized void setLado(String lado){
-        this.lado=lado;
-    }
-    public void correr(String ladoLlegada){
-        while (!semTestigo.tryAcquire()){
-            semTestigo.tryAcquire();
-        }       
-
-        //uso tryacquiere para que el atleta de mi mismo lado que no alcanzo a agarrarlo no se queda en la cola 
-        //de espera
-        //simula atleta corriendo
-        System.out.println (Thread.currentThread().getName()+" agarro el testigo" );
-        System.out.println ("Lado del Testigo antes de correr "+lado);
-        
-        this.setLado(ladoLlegada);
-        System.out.println ("Lado del Testigo despues de correr "+lado);
-        semTestigo.release();  
-        System.out.println (Thread.currentThread().getName()+" libero el testigo");         
-        
+    public void entregarTestigo(String ladoActualAtleta, String ladoLlegadaAtleta){
+        ladoActual=ladoLlegadaAtleta;
+        ladoDestino=ladoActualAtleta;
+        semTestigo.release();
+        mutex.release();       
+        System.out.println (Thread.currentThread().getName()+ " libera el testigo");
     
+    }
+    public boolean agarrarTestigo(String ladoActualAtleta, String ladoLlegadaAtleta){
+        boolean exito=false;
+        try{
+            mutex.acquire();
+            if (ladoActualAtleta.equals(ladoActual) && ladoLlegadaAtleta.equals(ladoDestino) ){
+                semTestigo.acquire();
+                System.out.println (Thread.currentThread().getName()+ " Agarro el testigo y comienza a correr");
+                exito=true;
+            
+            }
+            else{
+                mutex.release();
+            }
+        } catch (InterruptedException e){}
+        return exito;
+
     }
 }

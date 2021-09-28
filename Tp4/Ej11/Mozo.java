@@ -8,11 +8,11 @@ public class Mozo implements Runnable {
     public void run (){
         while (true){
             c.comenzarAPrepararBebida();
-            System.out.println ("El mozo comienza a preparar la bebida");
-            try {
+            try{
                 Thread.sleep(10);
             }catch (InterruptedException e){}
             c.servirBebida();
         }
+        
     }
 }

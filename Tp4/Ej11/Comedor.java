@@ -12,9 +12,6 @@ public class Comedor {
     private static Semaphore semMozo= new Semaphore(0);
     private static Semaphore mutex= new Semaphore (1);
 
-   
-   
-    
 
     public void solicitarComida (){       
         semEmpleadoC.release();    

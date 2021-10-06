@@ -1,4 +1,4 @@
-package PracticaParcial;
+package PracticaParcial.CentroHem;
 
 import java.util.concurrent.Semaphore;
 
@@ -70,4 +70,6 @@ public class CentroHemoterapia {
          medico.acquire();
        } catch (InterruptedException e){e.printStackTrace();}
     }
+    
+    
 }

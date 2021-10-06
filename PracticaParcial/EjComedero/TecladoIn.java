@@ -1,4 +1,4 @@
-package PracticaParcial;
+package PracticaParcial.EjComedero;
 
 import java.io.*;
 import java.util.*;

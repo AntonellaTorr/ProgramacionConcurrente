@@ -1,4 +1,4 @@
-package PracticaParcial;
+package PracticaParcial.CentroHem;
 
 public class Persona implements Runnable {
 

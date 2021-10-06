@@ -1,20 +1,21 @@
-package PracticaParcial;
+package PracticaParcial.CentroHem;
 
-public class MedicoClinico implements Runnable {
+public class MedicoSangre implements Runnable {
     private static  CentroHemoterapia c= new CentroHemoterapia(); 
-    public MedicoClinico (){
-        
+
+    public MedicoSangre (){
+
     }
 
     public void run (){
         while (true){
-            c.entrevistarDonante();
+            c.sacarSangre();
             try{
-                //simula entrevista
+                //simula extraccion
                 Thread.sleep(100);
             }catch (InterruptedException e){}
 
+            c.entregarCertificadoADonante();
         }
     }
-
 }

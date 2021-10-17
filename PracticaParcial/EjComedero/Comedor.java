@@ -8,8 +8,8 @@ public class Comedor {
     private int cantComederosLibres=cantComederos;
     private int cantGatosEsperando=0;
     private int cantPerrosEsperando=0;
-    private static Semaphore esperaGatos= new Semaphore(1);
-    private static Semaphore esperaPerros= new Semaphore(1);
+    private static Semaphore esperaGatos= new Semaphore(0);
+    private static Semaphore esperaPerros= new Semaphore(0);
     private static Semaphore mutex= new Semaphore(1);
     private static Semaphore mutexCantPerrosEsperando= new Semaphore (1);
     private static Semaphore mutexCantGatosEsperando= new Semaphore (1);

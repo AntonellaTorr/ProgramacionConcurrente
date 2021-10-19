@@ -1,3 +1,4 @@
+package Ej1;
 import java.util.concurrent.Semaphore;
 
 public class Instrucciones {

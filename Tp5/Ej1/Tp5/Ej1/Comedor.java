@@ -5,14 +5,14 @@ import java.util.concurrent.Semaphore;
 public class Comedor {
     private int cantidadPlatos;
     private char comiendo;
-    private Semaphore mutex, platosP, platosG, rendezvous;
+    private Semaphore mutex, platosP, platosG;
     private int cantPerrosEsperando,cantGatosEsperando,cantPerrosComiendo,cantGatosComiendo;
 
     public Comedor (int cantPlatos){
         this.cantidadPlatos=cantPlatos;
         this.comiendo=randomIngreso();
         System.out.println ("Empiezan a comer-------->"+comiendo);
-        this.rendezvous=new Semaphore (0);
+    
         this.mutex=new Semaphore (1);
         if (comiendo=='P'){
             

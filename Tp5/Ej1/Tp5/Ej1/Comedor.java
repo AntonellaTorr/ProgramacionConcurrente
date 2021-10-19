@@ -14,8 +14,21 @@ public class Comedor {
         System.out.println ("Empiezan a comer-------->"+comiendo);
         this.rendezvous=new Semaphore (0);
         this.mutex=new Semaphore (1);
-        this.platosP=new Semaphore (cantPlatos);
-        this.platosG=new Semaphore (cantPlatos);
+        if (comiendo=='P'){
+            
+            this.platosP=new Semaphore (cantPlatos);
+            System.out.println ("permisos semPerros "+platosP.availablePermits());
+            this.platosG= new Semaphore(0);
+            System.out.println ("permisos semPerros "+platosG.availablePermits());
+        }else{
+           
+            this.platosG=new Semaphore (cantPlatos);
+            System.out.println ("permisos semPerros "+platosP.availablePermits());
+           
+            this.platosP= new Semaphore(0);
+            System.out.println ("permisos semPerros "+platosG.availablePermits());
+
+        }
     }
     public char randomIngreso (){
         char com='G';
@@ -31,14 +44,12 @@ public class Comedor {
                 mutex.release();
 
             }else{
-                System.out.println (Thread.currentThread().getName() +" no pudo ingresar, espera");
                 cantPerrosEsperando++;
                 mutex.release();
-                //espera que el ultimo gato que se vaya le libere el permiso
-                rendezvous.acquire();
-                System.out.println (Thread.currentThread().getName() +" puede agarrar un plato");
             }
+            System.out.println ("permisos antes de acquire" +platosP.availablePermits());
             platosP.acquire();
+            System.out.println ("permisos despues de acquire" +platosP.availablePermits());
             incrementarCantPerroComiendo();
         } catch (Exception e) {}
 
@@ -61,8 +72,8 @@ public class Comedor {
                 cantGatosEsperando++;
                 mutex.release();
                 //espera que el ultimo perro que se vaya le libere el permiso
-                rendezvous.acquire();
             }
+            System.out.println ("metodo comer gato, permisos sem antes del acquire" +platosG.availablePermits());
             platosG.acquire();
             incrementarCantGatoComiendo();
         } catch (Exception e) {}
@@ -81,6 +92,7 @@ public class Comedor {
     public void liberarPlatoPerro(){
         try {
             //acquire de mutex para 
+
             platosP.release();
             System.out.println (Thread.currentThread().getName()+ "deja el plato y se va ");
 
@@ -90,17 +102,12 @@ public class Comedor {
                 cantGatosEsperando--;
                 comiendo='G';
                 mutex.release();
-
-                for (int i=0;i<cantidadPlatos;i++){
-                    //libero a todos los gatos que estaban esperando el permiso 
-                    rendezvous.release();
-                }
-                
+                System.out.println ("Habain gatos esperando cantidad de permisos de su semaforo "+platosG.availablePermits());
+                platosG.release(cantidadPlatos);
+                System.out.println ("Habain gatos esperando cantidad de permisos de su semaforo luego de liberar "+platosG.availablePermits());
               
             }else{
-                if (cantGatosEsperando==0 && cantPerrosEsperando>=1){
-                    rendezvous.release();
-                }
+                //sino entran los perros
                 mutex.release();
             }
         } catch (Exception e) {
@@ -114,20 +121,40 @@ public class Comedor {
             System.out.println (Thread.currentThread().getName()+ "deja el plato y se va ");
 
             cantGatosComiendo--;
-            if (/*(cantGatosComiendo==0 && */cantPerrosEsperando>=1){
+            if (cantGatosComiendo==0 && cantPerrosEsperando>=1){
                 cantPerrosEsperando--;
                 comiendo='P';
                 mutex.release();
                
-                for (int i=0;i<cantidadPlatos;i++){
-                    //libero a todos los perros que estaban esperando el permiso 
-                    rendezvous.release();
-                }
+                platosP.release(cantidadPlatos);
 
             }else{
-                if (cantPerrosEsperando==0 && cantGatosEsperando>=1){
-                    rendezvous.release();
-                }
+                //entran de nuevo los gatos
+                mutex.release();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void liberarPlatoGato2(){
+        try {
+            if (cantGatosComiendo==cantidadPlatos && cantPerrosEsperando>=1){
+
+            }
+            mutex.acquire();
+            platosG.release();
+            System.out.println (Thread.currentThread().getName()+ "deja el plato y se va ");
+
+            cantGatosComiendo--;
+            if (cantGatosComiendo==0 && cantPerrosEsperando>=1){
+                cantPerrosEsperando--;
+                comiendo='P';
+                mutex.release();
+               
+                platosP.release(cantidadPlatos);
+
+            }else{
+                //entran de nuevo los gatos
                 mutex.release();
             }
         } catch (Exception e) {

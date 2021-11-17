@@ -16,8 +16,10 @@ public class Persona implements Runnable {
         System.out.println (Thread.currentThread().getName() +" logro ingresar en el turno");
         //ingresa a la 1 actividad
         ingresarAActividad(primerActividad);
-        System.out.println (Thread.currentThread().getName() +" ingresa a la primeractividad");
+     
         //realiza la actividad
+        s.esperarInicioTurno();
+        System.out.println (Thread.currentThread().getName() +" comienza  la primeractividad");
         realizarActividad();
         System.out.println (Thread.currentThread().getName() +" finalizo la primer actividad y  rota");
         //rota

@@ -7,27 +7,39 @@ public class Salon {
     private Actividad acrobacia;
     private Actividad aro;
     //inicio de actividades para comunicar cuando todas las actividades estan completas
-    //comInicio para avisar cuando empezar actividad 
-    private Semaphore inicioActividades, turno, mutex, rotacion, rendevouz;
+    //turno para controlar que por cada turno solo ingresen 12 personas
+    //rotacion para que roten los 
+    private Semaphore inicioActividades, comInicio,turno, mutex, rotacion, rendevouz;
     private int cantPersonasSaliendo;
+    private boolean yaSeHizoRotacion;
 
     public Salon (int cupo){
         telas= new Actividad (cupo);
         acrobacia= new Actividad (cupo);
         aro= new Actividad (cupo);
         inicioActividades= new Semaphore(0);
+        comInicio= new Semaphore(0);
         turno= new Semaphore(12);
         mutex= new Semaphore(1);
         rotacion= new Semaphore(0);
         rendevouz= new Semaphore(0);
         cantPersonasSaliendo=0;
+        yaSeHizoRotacion=false;
 
+    }
+    public void esperarInicioTurno(){
+        try {
+            comInicio.acquire();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
     public void comenzarActividad() {
         //
         try {
             inicioActividades.acquire(3);
-            System.out.println ("--------------------------------EMPLEADO HABILITA AL INICIO DE ACTIVIDADES----------------------------------");
+            comInicio.release(12);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -37,10 +49,11 @@ public class Salon {
     public void rotar(){
         try {
             mutex.acquire();
-            System.out.println ("--------------------------------EMPLEADO HACE ROTAR A LAS PERSONAS----------------------------------");
+    
             telas.setCantAdentro(0);
             aro.setCantAdentro(0);
             acrobacia.setCantAdentro(0);
+            yaSeHizoRotacion=true;
             mutex.release();
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
@@ -53,13 +66,22 @@ public class Salon {
     public void actualizarCantPersonasEnActividades (){
         try {
             rendevouz.acquire(12);
-            System.out.println ("--------------------------------EMPLEADO VERIFICA QUE TODAS LAS PERSONAS SE HAYAN IDO----------------------------------");
+            
             mutex.acquire();
             telas.setCantAdentro(0);
             aro.setCantAdentro(0);
             acrobacia.setCantAdentro(0);
             mutex.release();
 
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    public void preparseParaProximoTurno(){
+        try {
+            mutex.acquire();
+            yaSeHizoRotacion= false;
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -80,11 +102,9 @@ public class Salon {
     public void hacerAcrobacias(){
         try {
             mutex.acquire();
-            System.out.println (Thread.currentThread().getName() +" QUERIA hacer acrobacia");
             if (acrobacia.getCantAdentro()<acrobacia.getCupo()){
                 acrobacia.setCantAdentro(acrobacia.getCantAdentro()+1);
-                System.out.println (Thread.currentThread().getName() +" LOGRO hacer acrobacia");
-                if (acrobacia.getCantAdentro()==acrobacia.getCupo()){
+                if (!yaSeHizoRotacion && acrobacia.getCantAdentro()==acrobacia.getCupo()){
                     inicioActividades.release();
                 }
                 mutex.release();
@@ -92,8 +112,7 @@ public class Salon {
             else{
                 if (aro.getCantAdentro()<aro.getCupo()){
                     aro.setCantAdentro(aro.getCantAdentro()+1);
-                    System.out.println (Thread.currentThread().getName() +" LOGRO hacer ARO");
-                    if (aro.getCantAdentro()==aro.getCupo()){
+                    if (!yaSeHizoRotacion && aro.getCantAdentro()==aro.getCupo()){
                         inicioActividades.release();
                     }
                     mutex.release();
@@ -101,8 +120,7 @@ public class Salon {
                 else{
                     if (telas.getCantAdentro()<telas.getCupo()){
                         telas.setCantAdentro(telas.getCantAdentro()+1);
-                        System.out.println (Thread.currentThread().getName() +" LOGRO hacer TELAS");
-                        if (telas.getCantAdentro()==telas.getCupo()){
+                        if (!yaSeHizoRotacion &&  telas.getCantAdentro()==telas.getCupo()){
                             inicioActividades.release();
                         }
                         mutex.release();
@@ -125,11 +143,9 @@ public class Salon {
         try {
             mutex.acquire();
             //si hay espacio ingresa sino busca una actividad libre
-            System.out.println (Thread.currentThread().getName() +" QUERIA hacer ARO");
             if (aro.getCantAdentro()<aro.getCupo()){
-                System.out.println (Thread.currentThread().getName() +" LOGRO hacer ARO");
                 aro.setCantAdentro(aro.getCantAdentro()+1);
-                if (aro.getCantAdentro()==aro.getCupo()){
+                if (!yaSeHizoRotacion &&  aro.getCantAdentro()==aro.getCupo()){
                     inicioActividades.release();
                 }
                 mutex.release();
@@ -137,8 +153,7 @@ public class Salon {
             else{
                 if (telas.getCantAdentro()<telas.getCupo()){
                     telas.setCantAdentro(telas.getCantAdentro()+1);
-                    System.out.println (Thread.currentThread().getName() +" LOGRO hacer TELAS");
-                    if (telas.getCantAdentro()==telas.getCupo()){
+                    if (!yaSeHizoRotacion &&  telas.getCantAdentro()==telas.getCupo()){
                         inicioActividades.release();
                     }
                     mutex.release();
@@ -146,8 +161,7 @@ public class Salon {
                 else{
                     if (acrobacia.getCantAdentro()<acrobacia.getCupo()){
                         acrobacia.setCantAdentro(acrobacia.getCantAdentro()+1);
-                        System.out.println (Thread.currentThread().getName() +" LOGRO hacer ACROBACIA");
-                        if (acrobacia.getCantAdentro()==acrobacia.getCupo()){
+                        if (!yaSeHizoRotacion &&  acrobacia.getCantAdentro()==acrobacia.getCupo()){
                             inicioActividades.release();
                         }
                         mutex.release();
@@ -163,11 +177,9 @@ public class Salon {
     public void hacerTelas(){
         try {
             mutex.acquire();
-            System.out.println (Thread.currentThread().getName() +" QUERIA hacer TELAS");
             if (telas.getCantAdentro()<telas.getCupo()){
                 telas.setCantAdentro(telas.getCantAdentro()+1);
-                System.out.println (Thread.currentThread().getName() +" LOGRO hacer TELAS");
-                if (telas.getCantAdentro()==telas.getCupo()){
+                if (!yaSeHizoRotacion && telas.getCantAdentro()==telas.getCupo()){
                     inicioActividades.release();
                 }
                 mutex.release();
@@ -175,8 +187,7 @@ public class Salon {
             else{
                 if (acrobacia.getCantAdentro()<acrobacia.getCupo()){
                     acrobacia.setCantAdentro(acrobacia.getCantAdentro()+1);
-                    System.out.println (Thread.currentThread().getName() +" LOGRO hacer ACROBACIA");
-                    if (acrobacia.getCantAdentro()==acrobacia.getCupo()){
+                    if (!yaSeHizoRotacion &&  acrobacia.getCantAdentro()==acrobacia.getCupo()){
                         inicioActividades.release();
                     }
                     mutex.release();
@@ -184,8 +195,7 @@ public class Salon {
                 else{
                     if (aro.getCantAdentro()<aro.getCupo()){
                         aro.setCantAdentro(aro.getCantAdentro()+1);
-                        System.out.println (Thread.currentThread().getName() +" LOGRO hacer ARO3");
-                        if (aro.getCantAdentro()==aro.getCupo()){
+                        if (!yaSeHizoRotacion &&  aro.getCantAdentro()==aro.getCupo()){
                             inicioActividades.release();
                         }
                         mutex.release();

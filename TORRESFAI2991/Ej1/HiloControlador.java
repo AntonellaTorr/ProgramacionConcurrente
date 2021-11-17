@@ -11,10 +11,12 @@ public class HiloControlador implements Runnable {
         while (true){
          
             s.comenzarActividad();
+            System.out.println ("--------------------------------EMPLEADO HABILITA AL INICIO DE ACTIVIDADES----------------------------------");
             esperarTiempoActividad();
             s.rotar();
             esperarTiempoActividad();
             s.actualizarCantPersonasEnActividades();
+            s.preparseParaProximoTurno();
         }
        
 
